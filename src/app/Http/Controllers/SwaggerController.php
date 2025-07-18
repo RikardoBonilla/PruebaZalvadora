@@ -24,7 +24,7 @@ use OpenApi\Attributes as OA;
     bearerFormat: 'JWT'
 )]
 #[OA\Tag(
-    name: 'Plans',
+    name: 'Planes',
     description: 'Gestión de planes de suscripción'
 )]
 #[OA\Schema(

@@ -1,59 +1,59 @@
-# Zalvadora - API RESTful para Gestión de Planes
+# Zalvadora - API RESTful para Gestiï¿½n de Planes
 
-## =Ë Descripción del Proyecto
+## =ï¿½ Descripciï¿½n del Proyecto
 
-Zalvadora es una aplicación Laravel 12 que implementa una API RESTful para la gestión de planes de suscripción. Utiliza arquitectura Domain-Driven Design (DDD) y está completamente dockerizada para facilitar el desarrollo y despliegue.
+Zalvadora es una aplicaciï¿½n Laravel 12 que implementa una API RESTful para la gestiï¿½n de planes de suscripciï¿½n. Utiliza arquitectura Domain-Driven Design (DDD) y estï¿½ completamente dockerizada para facilitar el desarrollo y despliegue.
 
-## <× Arquitectura del Sistema
+## <ï¿½ Arquitectura del Sistema
 
 ### Arquitectura DDD (Domain-Driven Design)
 
-El proyecto está estructurado siguiendo los principios de DDD con las siguientes capas:
+El proyecto estï¿½ estructurado siguiendo los principios de DDD con las siguientes capas:
 
 #### 1. **Capa de Dominio** (`app/Domain/`)
-- **Entidades**: Plan, Company, User con lógica de negocio
+- **Entidades**: Plan, Company, User con lï¿½gica de negocio
 - **Objetos de Valor**: Money, UserLimit, PlanName, Email, etc.
 - **Eventos**: Eventos de dominio como PlanCreated
 - **Interfaces de Repositorio**: Contratos para persistencia de datos
 
-#### 2. **Capa de Aplicación** (`app/Application/`)
-- **DTOs**: Data Transfer Objects para límites de API
+#### 2. **Capa de Aplicaciï¿½n** (`app/Application/`)
+- **DTOs**: Data Transfer Objects para lï¿½mites de API
 - **Casos de Uso**: Operaciones de negocio (CreatePlan, UpdatePlan, etc.)
-- **Servicios**: Servicios específicos de aplicación
+- **Servicios**: Servicios especï¿½ficos de aplicaciï¿½n
 
 #### 3. **Capa de Infraestructura** (`app/Infrastructure/`)
 - **Modelos**: Modelos Eloquent (PlanModel, CompanyModel, UserModel)
 - **Repositorios**: Implementaciones concretas de repositorios
 - **Eventos**: Infraestructura de manejo de eventos
 
-#### 4. **Capa de Presentación** (`app/Presentation/`)
-- **Controladores**: Controladores API con inyección de dependencias
-- **Requests**: Clases de validación de formularios
+#### 4. **Capa de Presentaciï¿½n** (`app/Presentation/`)
+- **Controladores**: Controladores API con inyecciï¿½n de dependencias
+- **Requests**: Clases de validaciï¿½n de formularios
 - **Resources**: Transformadores de respuesta API
-- **Policies**: Lógica de autorización
+- **Policies**: Lï¿½gica de autorizaciï¿½n
 
-## =3 Configuración del Entorno Docker
+## =3 Configuraciï¿½n del Entorno Docker
 
 ### Servicios Incluidos
 
 1. **Laravel App** (PHP 8.4 FPM Alpine)
 2. **Nginx** (Servidor web)
 3. **MySQL 8.0** (Base de datos)
-4. **Vite** (Compilación de assets frontend con TailwindCSS)
+4. **Vite** (Compilaciï¿½n de assets frontend con TailwindCSS)
 
-### Puertos de Configuración
+### Puertos de Configuraciï¿½n
 
-- **Aplicación**: http://localhost:8080 (Nginx)
+- **Aplicaciï¿½n**: http://localhost:8080 (Nginx)
 - **Base de datos**: localhost:3306 (MySQL)
 
-## =€ Instalación y Configuración
+## =ï¿½ Instalaciï¿½n y Configuraciï¿½n
 
 ### Requisitos Previos
 
 - Docker y Docker Compose instalados
 - Git para clonar el repositorio
 
-### Pasos de Instalación
+### Pasos de Instalaciï¿½n
 
 1. **Clonar el repositorio**
    ```bash
@@ -71,7 +71,7 @@ El proyecto está estructurado siguiendo los principios de DDD con las siguientes
    docker-compose up -d
    ```
 
-4. **Acceder al contenedor de la aplicación**
+4. **Acceder al contenedor de la aplicaciï¿½n**
    ```bash
    docker exec -it zalvadora_app sh
    ```
@@ -82,7 +82,7 @@ El proyecto está estructurado siguiendo los principios de DDD con las siguientes
    composer install
    ```
 
-6. **Generar clave de aplicación**
+6. **Generar clave de aplicaciï¿½n**
    ```bash
    php artisan key:generate
    ```
@@ -102,38 +102,38 @@ El proyecto está estructurado siguiendo los principios de DDD con las siguientes
    npm run dev
    ```
 
-### Configuración de Base de Datos
+### Configuraciï¿½n de Base de Datos
 
 Las variables de entorno para Docker:
 - **Host**: `db` (nombre del servicio Docker)
 - **Puerto**: 3306
 - **Base de datos**: `zalvadora_db`
 - **Usuario**: `root`
-- **Contraseña**: `root`
+- **Contraseï¿½a**: `root`
 
-## = Flujo de Trabajo de la Aplicación
+## = Flujo de Trabajo de la Aplicaciï¿½n
 
 ### Arquitectura de Flujo de Datos
 
 ```
-=ñ Cliente HTTP Request
-    “
+=ï¿½ Cliente HTTP Request
+    ï¿½
 < Nginx (Puerto 8080)
-    “
+    ï¿½
 = Laravel Application
-    “
-<¯ Router (routes/api_v1.php)
-    “
-<® Controller (Presentation Layer)
-    “
+    ï¿½
+<ï¿½ Router (routes/api_v1.php)
+    ï¿½
+<ï¿½ Controller (Presentation Layer)
+    ï¿½
 =' Use Case (Application Layer)
-    “
-<Û Repository Interface (Domain Layer)
-    “
-=¾ Repository Implementation (Infrastructure Layer)
-    “
-=Ä Eloquent Model
-    “
+    ï¿½
+<ï¿½ Repository Interface (Domain Layer)
+    ï¿½
+=ï¿½ Repository Implementation (Infrastructure Layer)
+    ï¿½
+=ï¿½ Eloquent Model
+    ï¿½
 =, MySQL Database
 ```
 
@@ -147,103 +147,103 @@ Route::get('/plans', [PlanController::class, 'index']);
 ```
 
 **Flujo de Archivos**:
-1. **Router** ’ `routes/api_v1.php`
-2. **Controller** ’ `app/Presentation/Controllers/PlanController.php:index()`
-3. **Use Case** ’ `app/Application/UseCases/Plan/GetAllPlansUseCase.php`
-4. **Repository** ’ `app/Infrastructure/Repositories/EloquentPlanRepository.php:findAll()`
-5. **Model** ’ `app/Infrastructure/Models/PlanModel.php`
-6. **Response** ’ `app/Presentation/Resources/PlanResource.php`
+1. **Router** ï¿½ `routes/api_v1.php`
+2. **Controller** ï¿½ `app/Presentation/Controllers/PlanController.php:index()`
+3. **Use Case** ï¿½ `app/Application/UseCases/Plan/GetAllPlansUseCase.php`
+4. **Repository** ï¿½ `app/Infrastructure/Repositories/EloquentPlanRepository.php:findAll()`
+5. **Model** ï¿½ `app/Infrastructure/Models/PlanModel.php`
+6. **Response** ï¿½ `app/Presentation/Resources/PlanResource.php`
 
-**Información Transferida**:
-- **Entrada**: Request vacío (solo headers de autenticación)
+**Informaciï¿½n Transferida**:
+- **Entrada**: Request vacï¿½o (solo headers de autenticaciï¿½n)
 - **Proceso**: Consulta a base de datos para obtener todos los planes
 - **Salida**: JSON con lista de planes transformados
 
 #### 2. **POST /api/v1/plans** - Crear Plan
 
 **Flujo de Archivos**:
-1. **Router** ’ `routes/api_v1.php:16`
-2. **Validation** ’ `app/Presentation/Requests/CreatePlanRequest.php`
-3. **Controller** ’ `app/Presentation/Controllers/PlanController.php:store()`
-4. **DTO** ’ `app/Application/DTOs/PlanDto.php`
-5. **Use Case** ’ `app/Application/UseCases/Plan/CreatePlanUseCase.php`
-6. **Entity** ’ `app/Domain/Entities/Plan.php`
-7. **Repository** ’ `app/Infrastructure/Repositories/EloquentPlanRepository.php:save()`
-8. **Model** ’ `app/Infrastructure/Models/PlanModel.php`
+1. **Router** ï¿½ `routes/api_v1.php:16`
+2. **Validation** ï¿½ `app/Presentation/Requests/CreatePlanRequest.php`
+3. **Controller** ï¿½ `app/Presentation/Controllers/PlanController.php:store()`
+4. **DTO** ï¿½ `app/Application/DTOs/PlanDto.php`
+5. **Use Case** ï¿½ `app/Application/UseCases/Plan/CreatePlanUseCase.php`
+6. **Entity** ï¿½ `app/Domain/Entities/Plan.php`
+7. **Repository** ï¿½ `app/Infrastructure/Repositories/EloquentPlanRepository.php:save()`
+8. **Model** ï¿½ `app/Infrastructure/Models/PlanModel.php`
 
-**Información Transferida**:
+**Informaciï¿½n Transferida**:
 - **Entrada**: JSON con datos del plan (name, monthly_price_amount, monthly_price_currency, user_limit, features)
-- **Validación**: Reglas de negocio y formato
-- **Proceso**: Creación de entidad de dominio y persistencia
-- **Salida**: JSON con plan creado y código 201
+- **Validaciï¿½n**: Reglas de negocio y formato
+- **Proceso**: Creaciï¿½n de entidad de dominio y persistencia
+- **Salida**: JSON con plan creado y cï¿½digo 201
 
 #### 3. **GET /api/v1/plans/{id}** - Mostrar Plan
 
 **Flujo de Archivos**:
-1. **Router** ’ `routes/api_v1.php:17`
-2. **Controller** ’ `app/Presentation/Controllers/PlanController.php:show()`
-3. **Use Case** ’ `app/Application/UseCases/Plan/GetPlanByIdUseCase.php`
-4. **Repository** ’ `app/Infrastructure/Repositories/EloquentPlanRepository.php:findById()`
-5. **Model** ’ `app/Infrastructure/Models/PlanModel.php`
+1. **Router** ï¿½ `routes/api_v1.php:17`
+2. **Controller** ï¿½ `app/Presentation/Controllers/PlanController.php:show()`
+3. **Use Case** ï¿½ `app/Application/UseCases/Plan/GetPlanByIdUseCase.php`
+4. **Repository** ï¿½ `app/Infrastructure/Repositories/EloquentPlanRepository.php:findById()`
+5. **Model** ï¿½ `app/Infrastructure/Models/PlanModel.php`
 
-**Información Transferida**:
+**Informaciï¿½n Transferida**:
 - **Entrada**: UUID del plan en la URL
-- **Proceso**: Búsqueda por ID en base de datos
+- **Proceso**: Bï¿½squeda por ID en base de datos
 - **Salida**: JSON con datos completos del plan o error 404
 
 #### 4. **PUT /api/v1/plans/{id}** - Actualizar Plan
 
 **Flujo de Archivos**:
-1. **Router** ’ `routes/api_v1.php:18`
-2. **Validation** ’ `app/Presentation/Requests/UpdatePlanRequest.php`
-3. **Controller** ’ `app/Presentation/Controllers/PlanController.php:update()`
-4. **DTO** ’ `app/Application/DTOs/PlanDto.php`
-5. **Use Case** ’ `app/Application/UseCases/Plan/UpdatePlanUseCase.php`
-6. **Repository** ’ `app/Infrastructure/Repositories/EloquentPlanRepository.php:update()`
+1. **Router** ï¿½ `routes/api_v1.php:18`
+2. **Validation** ï¿½ `app/Presentation/Requests/UpdatePlanRequest.php`
+3. **Controller** ï¿½ `app/Presentation/Controllers/PlanController.php:update()`
+4. **DTO** ï¿½ `app/Application/DTOs/PlanDto.php`
+5. **Use Case** ï¿½ `app/Application/UseCases/Plan/UpdatePlanUseCase.php`
+6. **Repository** ï¿½ `app/Infrastructure/Repositories/EloquentPlanRepository.php:update()`
 
-**Información Transferida**:
+**Informaciï¿½n Transferida**:
 - **Entrada**: UUID + JSON con datos actualizados
-- **Proceso**: Validación, búsqueda, actualización de entidad
+- **Proceso**: Validaciï¿½n, bï¿½squeda, actualizaciï¿½n de entidad
 - **Salida**: JSON con plan actualizado
 
 #### 5. **DELETE /api/v1/plans/{id}** - Eliminar Plan
 
 **Flujo de Archivos**:
-1. **Router** ’ `routes/api_v1.php:19`
-2. **Controller** ’ `app/Presentation/Controllers/PlanController.php:destroy()`
-3. **Use Case** ’ `app/Application/UseCases/Plan/DeletePlanUseCase.php`
-4. **Repository** ’ `app/Infrastructure/Repositories/EloquentPlanRepository.php:delete()`
+1. **Router** ï¿½ `routes/api_v1.php:19`
+2. **Controller** ï¿½ `app/Presentation/Controllers/PlanController.php:destroy()`
+3. **Use Case** ï¿½ `app/Application/UseCases/Plan/DeletePlanUseCase.php`
+4. **Repository** ï¿½ `app/Infrastructure/Repositories/EloquentPlanRepository.php:delete()`
 
-**Información Transferida**:
+**Informaciï¿½n Transferida**:
 - **Entrada**: UUID del plan
-- **Proceso**: Verificación de existencia y eliminación
-- **Salida**: Respuesta vacía con código 204
+- **Proceso**: Verificaciï¿½n de existencia y eliminaciï¿½n
+- **Salida**: Respuesta vacï¿½a con cï¿½digo 204
 
-## =á Sistema de Autenticación
+## =ï¿½ Sistema de Autenticaciï¿½n
 
 ### Laravel Sanctum
 
-La aplicación utiliza Laravel Sanctum para autenticación basada en tokens:
+La aplicaciï¿½n utiliza Laravel Sanctum para autenticaciï¿½n basada en tokens:
 
-1. **Login** ’ `POST /api/v1/login`
+1. **Login** ï¿½ `POST /api/v1/login`
    - **Entrada**: email, password
-   - **Proceso**: Validación de credenciales
+   - **Proceso**: Validaciï¿½n de credenciales
    - **Salida**: Token de acceso
 
-2. **Protección de Rutas**:
+2. **Protecciï¿½n de Rutas**:
    - Middleware `auth:sanctum` en rutas protegidas
    - Header requerido: `Authorization: Bearer {token}`
 
-## =Ê Esquema de Base de Datos
+## =ï¿½ Esquema de Base de Datos
 
 ### Tabla: plans
 ```sql
 - id (UUID) - Clave primaria
 - name (VARCHAR) - Nombre del plan
 - monthly_price_amount (INTEGER) - Precio en centavos
-- monthly_price_currency (VARCHAR) - Código de moneda
-- user_limit (INTEGER) - Límite máximo de usuarios
-- features (JSON) - Array de características
+- monthly_price_currency (VARCHAR) - Cï¿½digo de moneda
+- user_limit (INTEGER) - Lï¿½mite mï¿½ximo de usuarios
+- features (JSON) - Array de caracterï¿½sticas
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 ```
@@ -252,8 +252,8 @@ La aplicación utiliza Laravel Sanctum para autenticación basada en tokens:
 ```sql
 - id (UUID) - Clave primaria
 - name (VARCHAR) - Nombre de la empresa
-- email (VARCHAR) - Email único de la empresa
-- plan_id (UUID) - Clave foránea a plans
+- email (VARCHAR) - Email ï¿½nico de la empresa
+- plan_id (UUID) - Clave forï¿½nea a plans
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 ```
@@ -262,51 +262,51 @@ La aplicación utiliza Laravel Sanctum para autenticación basada en tokens:
 ```sql
 - id (UUID) - Clave primaria
 - name (VARCHAR) - Nombre del usuario
-- email (VARCHAR) - Email único del usuario
-- company_id (UUID) - Clave foránea a companies
+- email (VARCHAR) - Email ï¿½nico del usuario
+- company_id (UUID) - Clave forï¿½nea a companies
 - role (ENUM) - Rol del usuario (admin/user)
-- password (VARCHAR) - Contraseña encriptada
+- password (VARCHAR) - Contraseï¿½a encriptada
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 ```
 
-## =Ú Documentación API
+## =ï¿½ Documentaciï¿½n API
 
 ### Swagger/OpenAPI
 
 - **URL**: http://localhost:8080/api/documentation
 - **JSON Spec**: http://localhost:8080/docs/api-docs.json
-- **Características**:
-  - Documentación completa con OpenAPI 3.0
+- **Caracterï¿½sticas**:
+  - Documentaciï¿½n completa con OpenAPI 3.0
   - Esquemas de request/response
-  - Documentación de autenticación
+  - Documentaciï¿½n de autenticaciï¿½n
   - Pruebas interactivas
   - Ejemplos de requests y responses
 
 ### Endpoints Principales
 
-| Método | Endpoint | Descripción | Autenticación |
+| Mï¿½todo | Endpoint | Descripciï¿½n | Autenticaciï¿½n |
 |--------|----------|-------------|---------------|
 | GET | `/api/v1/plans` | Listar planes | Requerida (Admin) |
 | POST | `/api/v1/plans` | Crear plan | Requerida (Admin) |
 | GET | `/api/v1/plans/{id}` | Mostrar plan | Opcional |
 | PUT | `/api/v1/plans/{id}` | Actualizar plan | Requerida (Admin) |
 | DELETE | `/api/v1/plans/{id}` | Eliminar plan | Requerida (Admin) |
-| POST | `/api/v1/login` | Iniciar sesión | No |
+| POST | `/api/v1/login` | Iniciar sesiï¿½n | No |
 
-## >ê Testing
+## >ï¿½ Testing
 
 ### Estructura de Pruebas
 
 #### Pruebas Unitarias (`tests/Unit/`)
 - Value Objects de dominio (Money, UserLimit, PlanName, etc.)
 - Entidades de dominio (Plan, Company, User)
-- Casos de uso y lógica de negocio
+- Casos de uso y lï¿½gica de negocio
 
 #### Pruebas de Funcionalidad (`tests/Feature/`)
 - Funcionalidad de endpoints API
-- Autenticación y autorización
-- Integración con base de datos
+- Autenticaciï¿½n y autorizaciï¿½n
+- Integraciï¿½n con base de datos
 
 ### Comandos de Testing
 
@@ -314,14 +314,14 @@ La aplicación utiliza Laravel Sanctum para autenticación basada en tokens:
 # Ejecutar todas las pruebas
 docker exec zalvadora_app php artisan test
 
-# Ejecutar pruebas específicas
+# Ejecutar pruebas especï¿½ficas
 docker exec zalvadora_app php artisan test --filter=PlanTest
 
 # Ejecutar con cobertura
 docker exec zalvadora_app php artisan test --coverage
 ```
 
-## =à Comandos de Desarrollo
+## =ï¿½ Comandos de Desarrollo
 
 ### Comandos Docker
 
@@ -350,16 +350,16 @@ composer test
 # o
 php artisan test
 
-# Formateo de código
+# Formateo de cï¿½digo
 ./vendor/bin/pint
 
 # Migraciones
 php artisan migrate
 
-# Limpiar caché de configuración
+# Limpiar cachï¿½ de configuraciï¿½n
 php artisan config:clear
 
-# Generar documentación Swagger
+# Generar documentaciï¿½n Swagger
 php artisan l5-swagger:generate
 ```
 
@@ -369,65 +369,65 @@ php artisan l5-swagger:generate
 # Build de desarrollo con hot reload
 npm run dev
 
-# Build de producción
+# Build de producciï¿½n
 npm run build
 
 # Watch para cambios
 npm run watch
 ```
 
-## =Á Estructura de Archivos Clave
+## =ï¿½ Estructura de Archivos Clave
 
 ```
 PruebaZalvadora/
    docker/                          # Configuraciones Docker
       app/Dockerfile               # Contenedor PHP-FPM
-      nginx/default.conf           # Configuración Nginx
-   src/                             # Aplicación Laravel
+      nginx/default.conf           # Configuraciï¿½n Nginx
+   src/                             # Aplicaciï¿½n Laravel
       app/
          Domain/                  # Capa de Dominio
             Entities/
             ValueObjects/
             Repositories/
-         Application/             # Capa de Aplicación
+         Application/             # Capa de Aplicaciï¿½n
             DTOs/
             UseCases/
          Infrastructure/          # Capa de Infraestructura
             Models/
             Repositories/
-         Presentation/            # Capa de Presentación
+         Presentation/            # Capa de Presentaciï¿½n
              Controllers/
              Requests/
              Resources/
       routes/api_v1.php           # Rutas API v1
       database/migrations/         # Migraciones de BD
       tests/                       # Pruebas unitarias y de funcionalidad
-   docker-compose.yml              # Configuración Docker Compose
-   README.md                       # Esta documentación
+   docker-compose.yml              # Configuraciï¿½n Docker Compose
+   README.md                       # Esta documentaciï¿½n
 ```
 
 ## =' Dependencias Principales
 
 ### PHP (Composer)
 - **Laravel Framework 12.x** - Framework principal
-- **Laravel Sanctum** - Autenticación API
-- **L5 Swagger** - Documentación API
+- **Laravel Sanctum** - Autenticaciï¿½n API
+- **L5 Swagger** - Documentaciï¿½n API
 - **Laravel Tinker** - REPL para debugging
 - **PHPUnit** - Framework de testing
-- **Laravel Pint** - Formateo de código
-- **Ramsey UUID** - Generación de UUIDs
+- **Laravel Pint** - Formateo de cï¿½digo
+- **Ramsey UUID** - Generaciï¿½n de UUIDs
 
 ### Node.js (NPM)
-- **Vite** - Compilación de assets
+- **Vite** - Compilaciï¿½n de assets
 - **TailwindCSS** - Framework de estilos
-- **Laravel Vite Plugin** - Integración con Laravel
-- **Concurrently** - Ejecución de múltiples comandos
+- **Laravel Vite Plugin** - Integraciï¿½n con Laravel
+- **Concurrently** - Ejecuciï¿½n de mï¿½ltiples comandos
 
-## =¨ Solución de Problemas Comunes
+## =ï¿½ Soluciï¿½n de Problemas Comunes
 
-### Error de Conexión a Base de Datos
+### Error de Conexiï¿½n a Base de Datos
 ```bash
-# Verificar que el contenedor de BD esté ejecutándose
+# Verificar que el contenedor de BD estï¿½ ejecutï¿½ndose
 docker-compose ps
 
 # Recrear contenedores
@@ -445,7 +445,7 @@ chown -R www-data:www-data /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache
 ```
 
-### Cache de Configuración
+### Cache de Configuraciï¿½n
 ```bash
 # Limpiar todos los caches
 docker exec zalvadora_app php artisan config:clear
@@ -454,11 +454,11 @@ docker exec zalvadora_app php artisan route:clear
 docker exec zalvadora_app php artisan view:clear
 ```
 
-## =È Rendimiento y Optimización
+## =ï¿½ Rendimiento y Optimizaciï¿½n
 
-### Recomendaciones para Producción
+### Recomendaciones para Producciï¿½n
 
-1. **Configurar caché**:
+1. **Configurar cachï¿½**:
    ```bash
    php artisan config:cache
    php artisan route:cache
@@ -470,32 +470,345 @@ docker exec zalvadora_app php artisan view:clear
    composer install --optimize-autoloader --no-dev
    ```
 
-3. **Compilar assets para producción**:
+3. **Compilar assets para producciï¿½n**:
    ```bash
    npm run build
    ```
 
-## > Contribución
+## ðŸ“‹ GuÃ­a para Crear un CRUD Completo para Nueva Tabla
+
+### Pasos para Implementar un Endpoint y CRUD Completo
+
+Esta guÃ­a te llevarÃ¡ paso a paso para crear un CRUD completo siguiendo la arquitectura DDD implementada en el proyecto.
+
+#### Ejemplo: Crear CRUD para tabla "Categorias"
+
+### 1. ðŸ—ï¸ CreaciÃ³n de MigraciÃ³n y Modelo
+
+```bash
+# Crear migraciÃ³n
+docker exec zalvadora_app php artisan make:migration create_categorias_table
+
+# Editar el archivo de migraciÃ³n en database/migrations/
+```
+
+**Estructura de migraciÃ³n ejemplo:**
+```php
+Schema::create('categorias', function (Blueprint $table) {
+    $table->uuid('id')->primary();
+    $table->string('name', 100);
+    $table->text('description')->nullable();
+    $table->boolean('is_active')->default(true);
+    $table->timestamps();
+});
+```
+
+### 2. ðŸ“¦ Capa de Dominio (Domain Layer)
+
+#### 2.1 Crear Value Objects (`app/Domain/ValueObjects/`)
+```php
+// app/Domain/ValueObjects/CategoriaName.php
+final readonly class CategoriaName
+{
+    public function __construct(public string $value)
+    {
+        if (strlen($value) > 100) {
+            throw new InvalidArgumentException('Categoria name cannot exceed 100 characters');
+        }
+    }
+}
+```
+
+#### 2.2 Crear Entidad de Dominio (`app/Domain/Entities/`)
+```php
+// app/Domain/Entities/Categoria.php
+final class Categoria
+{
+    public function __construct(
+        public readonly CategoriaId $id,
+        public CategoriaName $name,
+        public ?string $description,
+        public bool $isActive,
+        public readonly \DateTimeImmutable $createdAt
+    ) {}
+}
+```
+
+#### 2.3 Crear Interface de Repositorio (`app/Domain/Repositories/`)
+```php
+// app/Domain/Repositories/CategoriaRepositoryInterface.php
+interface CategoriaRepositoryInterface
+{
+    public function findAll(): array;
+    public function findById(CategoriaId $id): ?Categoria;
+    public function save(Categoria $categoria): Categoria;
+    public function update(Categoria $categoria): Categoria;
+    public function delete(CategoriaId $id): void;
+}
+```
+
+### 3. ðŸ”§ Capa de AplicaciÃ³n (Application Layer)
+
+#### 3.1 Crear DTOs (`app/Application/DTOs/`)
+```php
+// app/Application/DTOs/CategoriaDto.php
+final readonly class CategoriaDto
+{
+    public function __construct(
+        public string $name,
+        public ?string $description,
+        public bool $isActive = true
+    ) {}
+}
+```
+
+#### 3.2 Crear Casos de Uso (`app/Application/UseCases/Categoria/`)
+```php
+// app/Application/UseCases/Categoria/CreateCategoriaUseCase.php
+// app/Application/UseCases/Categoria/ListCategoriasUseCase.php
+// app/Application/UseCases/Categoria/GetCategoriaByIdUseCase.php
+// app/Application/UseCases/Categoria/UpdateCategoriaUseCase.php
+// app/Application/UseCases/Categoria/DeleteCategoriaUseCase.php
+```
+
+### 4. ðŸ—ï¸ Capa de Infraestructura (Infrastructure Layer)
+
+#### 4.1 Crear Modelo Eloquent (`app/Infrastructure/Models/`)
+```php
+// app/Infrastructure/Models/CategoriaModel.php
+class CategoriaModel extends Model
+{
+    use HasFactory, HasUuids;
+
+    protected $table = 'categorias';
+    protected $fillable = ['name', 'description', 'is_active'];
+    protected $casts = ['is_active' => 'boolean'];
+}
+```
+
+#### 4.2 Implementar Repositorio (`app/Infrastructure/Repositories/`)
+```php
+// app/Infrastructure/Repositories/EloquentCategoriaRepository.php
+final readonly class EloquentCategoriaRepository implements CategoriaRepositoryInterface
+{
+    public function __construct(private CategoriaModel $model) {}
+    
+    public function findAll(): array { /* implementaciÃ³n */ }
+    public function findById(CategoriaId $id): ?Categoria { /* implementaciÃ³n */ }
+    // ... resto de mÃ©todos
+}
+```
+
+### 5. ðŸŒ Capa de PresentaciÃ³n (Presentation Layer)
+
+#### 5.1 Crear Requests de ValidaciÃ³n (`app/Presentation/Requests/`)
+```php
+// app/Presentation/Requests/CreateCategoriaRequest.php
+// app/Presentation/Requests/UpdateCategoriaRequest.php
+class CreateCategoriaRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string',
+            'is_active' => 'boolean'
+        ];
+    }
+}
+```
+
+#### 5.2 Crear Resource de Respuesta (`app/Presentation/Resources/`)
+```php
+// app/Presentation/Resources/CategoriaResource.php
+class CategoriaResource extends JsonResource
+{
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'is_active' => $this->isActive,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt
+        ];
+    }
+}
+```
+
+#### 5.3 Crear Controlador (`app/Presentation/Controllers/Api/V1/`)
+```php
+// app/Presentation/Controllers/Api/V1/CategoriaController.php
+class CategoriaController extends Controller
+{
+    public function __construct(
+        private readonly CreateCategoriaUseCase $createUseCase,
+        private readonly ListCategoriasUseCase $listUseCase,
+        // ... otros use cases
+    ) {}
+
+    public function index() { /* implementaciÃ³n */ }
+    public function store(CreateCategoriaRequest $request) { /* implementaciÃ³n */ }
+    public function show(string $id) { /* implementaciÃ³n */ }
+    public function update(UpdateCategoriaRequest $request, string $id) { /* implementaciÃ³n */ }
+    public function destroy(string $id) { /* implementaciÃ³n */ }
+}
+```
+
+### 6. ðŸ›£ï¸ ConfiguraciÃ³n de Rutas
+
+#### 6.1 AÃ±adir Rutas API (`routes/api_v1.php`)
+```php
+// Rutas pÃºblicas
+Route::get('/categorias', [CategoriaController::class, 'index']);
+Route::get('/categorias/{id}', [CategoriaController::class, 'show']);
+
+// Rutas protegidas (requieren autenticaciÃ³n)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/categorias', [CategoriaController::class, 'store']);
+    Route::put('/categorias/{id}', [CategoriaController::class, 'update']);
+    Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy']);
+});
+```
+
+### 7. ðŸ“š DocumentaciÃ³n Swagger
+
+#### 7.1 AÃ±adir Esquemas al SwaggerController
+```php
+// En app/Http/Controllers/SwaggerController.php
+#[OA\Tag(
+    name: 'Categorias',
+    description: 'GestiÃ³n de categorÃ­as'
+)]
+
+#[OA\Schema(
+    schema: 'Categoria',
+    title: 'Categoria',
+    description: 'CategorÃ­a del sistema',
+    // ... propiedades
+)]
+```
+
+#### 7.2 Documentar Endpoints en el Controlador
+```php
+#[OA\Get(
+    path: '/api/v1/categorias',
+    tags: ['Categorias'],
+    summary: 'Listar categorÃ­as',
+    // ... documentaciÃ³n completa
+)]
+```
+
+### 8. ðŸ§ª Crear Tests
+
+#### 8.1 Tests Unitarios (`tests/Unit/`)
+```php
+// tests/Unit/Domain/ValueObjects/CategoriaNameTest.php
+// tests/Unit/Domain/Entities/CategoriaTest.php
+// tests/Unit/Application/UseCases/Categoria/CreateCategoriaUseCaseTest.php
+```
+
+#### 8.2 Tests de Feature (`tests/Feature/`)
+```php
+// tests/Feature/Api/CategoriaControllerTest.php
+class CategoriaControllerTest extends TestCase
+{
+    public function test_can_list_categorias() { /* implementaciÃ³n */ }
+    public function test_can_create_categoria() { /* implementaciÃ³n */ }
+    public function test_can_show_categoria() { /* implementaciÃ³n */ }
+    public function test_can_update_categoria() { /* implementaciÃ³n */ }
+    public function test_can_delete_categoria() { /* implementaciÃ³n */ }
+}
+```
+
+### 9. ðŸ”§ ConfiguraciÃ³n de Dependencias
+
+#### 9.1 Registrar en Service Provider (`app/Providers/AppServiceProvider.php`)
+```php
+public function register(): void
+{
+    $this->app->bind(
+        CategoriaRepositoryInterface::class,
+        EloquentCategoriaRepository::class
+    );
+}
+```
+
+### 10. âœ… VerificaciÃ³n Final
+
+#### Ejecutar Comandos de VerificaciÃ³n:
+```bash
+# Ejecutar migraciones
+docker exec zalvadora_app php artisan migrate
+
+# Ejecutar tests
+docker exec zalvadora_app php artisan test
+
+# Formatear cÃ³digo
+docker exec zalvadora_app ./vendor/bin/pint
+
+# Generar documentaciÃ³n Swagger
+docker exec zalvadora_app php artisan l5-swagger:generate
+
+# Verificar rutas
+docker exec zalvadora_app php artisan route:list --path=categorias
+```
+
+### ðŸ“‹ Checklist de ImplementaciÃ³n
+
+- [ ] âœ… MigraciÃ³n creada y ejecutada
+- [ ] âœ… Value Objects implementados
+- [ ] âœ… Entidad de dominio creada
+- [ ] âœ… Interface de repositorio definida
+- [ ] âœ… DTOs implementados
+- [ ] âœ… Casos de uso creados (CRUD completo)
+- [ ] âœ… Modelo Eloquent implementado
+- [ ] âœ… Repositorio concreto implementado
+- [ ] âœ… Requests de validaciÃ³n creados
+- [ ] âœ… Resource de respuesta implementado
+- [ ] âœ… Controlador con todos los mÃ©todos CRUD
+- [ ] âœ… Rutas registradas en api_v1.php
+- [ ] âœ… DocumentaciÃ³n Swagger completa
+- [ ] âœ… Tests unitarios implementados
+- [ ] âœ… Tests de feature implementados
+- [ ] âœ… Dependencias registradas en Service Provider
+- [ ] âœ… PolÃ­ticas de autorizaciÃ³n (si aplica)
+- [ ] âœ… Seeders para datos iniciales (si aplica)
+
+### ðŸš€ Resultado Final
+
+Al seguir estos pasos tendrÃ¡s:
+- âœ… API RESTful completa con 5 endpoints (GET, POST, GET/{id}, PUT/{id}, DELETE/{id})
+- âœ… Arquitectura DDD respetada
+- âœ… ValidaciÃ³n de datos
+- âœ… DocumentaciÃ³n Swagger interactiva
+- âœ… Tests automatizados
+- âœ… AutorizaciÃ³n implementada
+- âœ… CÃ³digos de respuesta HTTP apropiados
+- âœ… Manejo de errores estÃ¡ndar
+
+## > Contribuciï¿½n
 
 ### Flujo de Trabajo
 
 1. Crear rama feature desde main
 2. Implementar cambios siguiendo arquitectura DDD
-3. Añadir pruebas unitarias y de funcionalidad
+3. Aï¿½adir pruebas unitarias y de funcionalidad
 4. Ejecutar formateo con Laravel Pint
 5. Verificar que todas las pruebas pasen
 6. Crear Pull Request
 
-### Estándares de Código
+### Estï¿½ndares de Cï¿½digo
 
 - Seguir PSR-12 para PHP
-- Usar Laravel Pint para formateo automático
-- Documentar métodos públicos con PHPDoc
+- Usar Laravel Pint para formateo automï¿½tico
+- Documentar mï¿½todos pï¿½blicos con PHPDoc
 - Mantener cobertura de pruebas > 80%
 
-## =Ä Licencia
+## =ï¿½ Licencia
 
-Este proyecto es parte de una prueba técnica para Zalvadora.
+Este proyecto es parte de una prueba tï¿½cnica para Zalvadora.
 
 ---
 

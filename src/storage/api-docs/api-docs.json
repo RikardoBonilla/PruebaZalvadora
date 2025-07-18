@@ -166,14 +166,14 @@
                 ]
             }
         },
-        "/api/v1/plans": {
+        "/api/v1/planes": {
             "get": {
                 "tags": [
-                    "Plans"
+                    "Planes"
                 ],
                 "summary": "Listar planes",
                 "description": "Obtiene la lista de todos los planes disponibles. Este endpoint es público y no requiere autenticación.",
-                "operationId": "getPlans",
+                "operationId": "getPlanes",
                 "responses": {
                     "200": {
                         "description": "Lista de planes obtenida exitosamente",
@@ -189,7 +189,7 @@
             },
             "post": {
                 "tags": [
-                    "Plans"
+                    "Planes"
                 ],
                 "summary": "Crear un plan",
                 "description": "Crea un nuevo plan de suscripción con las características especificadas",
@@ -254,10 +254,10 @@
                 ]
             }
         },
-        "/api/v1/plans/{id}": {
+        "/api/v1/planes/{id}": {
             "get": {
                 "tags": [
-                    "Plans"
+                    "Planes"
                 ],
                 "summary": "Obtener un plan",
                 "description": "Obtiene los detalles de un plan específico por su ID. Este endpoint es público y no requiere autenticación.",
@@ -299,7 +299,7 @@
             },
             "put": {
                 "tags": [
-                    "Plans"
+                    "Planes"
                 ],
                 "summary": "Actualizar un plan",
                 "description": "Actualiza un plan existente con nuevos datos",
@@ -387,7 +387,7 @@
             },
             "delete": {
                 "tags": [
-                    "Plans"
+                    "Planes"
                 ],
                 "summary": "Eliminar un plan",
                 "description": "Elimina un plan existente del sistema",
@@ -751,7 +751,7 @@
     },
     "tags": [
         {
-            "name": "Plans",
+            "name": "Planes",
             "description": "Gestión de planes de suscripción"
         },
         {

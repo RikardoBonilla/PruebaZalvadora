@@ -1,44 +1,44 @@
 services:
-  # Servicio 1: Nuestra aplicación Laravel (con PHP y Composer)
+  # Servicio 1: Nuestra aplicación Laravel (con PHP)
   app:
     build:
       context: .
-      dockerfile: docker/app/dockerfile
+      dockerfile: docker/app/Dockerfile
     container_name: zalvadora_app
     volumes:
       - ./src:/var/www/html
     networks:
       - zalvadora_network
 
-  # Servicio 2: Servidor web Nginx
+  # Servicio 2: El servidor web
   nginx:
-    image: nginx:latest
+    image: nginx:alpine
     container_name: zalvadora_nginx
     ports:
       - "8080:80"
     volumes:
       - ./src:/var/www/html
-      - ./docker/nginx:/etc/nginx/conf.d
-    networks:
-      - zalvadora_network
+      - ./docker/nginx:/etc/nginx/conf.d 
     depends_on:
       - app
-    
-    db:
-      image: mysql:8.0
-      container_name: zalvadora_db
-      ports:
-        - "3306:3306"
-      restart: unless-stopped
-      enviroment:
-        MYSQL_ROOT_PASSWORD: root
-        MYSQL_DATABASE: zalvadora
-        MYSQL_USER: zalvadora_user
-        MYSQL_PASSWORD: zalvadora_pass
-      volumes:
-        - zalvadora_db_data:/var/lib/mysql
-      networks:
-        - zalvadora_network
+    networks:
+      - zalvadora_network
+
+  # Servicio 3: La base de datos
+  db:
+    image: mysql:8.0
+    container_name: zalvadora_db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: zalvadora_db
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - zalvadora_db_data:/var/lib/mysql
+    networks:
+      - zalvadora_network
+
 networks:
   zalvadora_network:
     driver: bridge

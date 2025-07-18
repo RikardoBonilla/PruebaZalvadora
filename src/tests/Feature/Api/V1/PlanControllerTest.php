@@ -25,13 +25,13 @@ class PlanControllerTest extends TestCase
         ]);
     }
 
-    public function test_can_list_plans(): void
+    public function test_can_list_planes(): void
     {
         Sanctum::actingAs($this->adminUser);
 
         PlanModel::factory()->count(3)->create();
 
-        $response = $this->getJson('/api/v1/plans');
+        $response = $this->getJson('/api/v1/planes');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -61,7 +61,7 @@ class PlanControllerTest extends TestCase
             'features' => ['Feature A', 'Feature B'],
         ];
 
-        $response = $this->postJson('/api/v1/plans', $planData);
+        $response = $this->postJson('/api/v1/planes', $planData);
 
         $response->assertStatus(201)
             ->assertJsonStructure([
@@ -80,7 +80,7 @@ class PlanControllerTest extends TestCase
                 'features' => ['Feature A', 'Feature B'],
             ]);
 
-        $this->assertDatabaseHas('plans', [
+        $this->assertDatabaseHas('planes', [
             'name' => 'Test Plan',
             'monthly_price_amount' => 2999,
             'monthly_price_currency' => 'USD',
@@ -94,7 +94,7 @@ class PlanControllerTest extends TestCase
 
         $plan = PlanModel::factory()->create();
 
-        $response = $this->getJson("/api/v1/plans/{$plan->id}");
+        $response = $this->getJson("/api/v1/planes/{$plan->id}");
 
         $response->assertStatus(200)
             ->assertJson([
@@ -117,7 +117,7 @@ class PlanControllerTest extends TestCase
             'features' => ['Updated Feature'],
         ];
 
-        $response = $this->putJson("/api/v1/plans/{$plan->id}", $updateData);
+        $response = $this->putJson("/api/v1/planes/{$plan->id}", $updateData);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -128,7 +128,7 @@ class PlanControllerTest extends TestCase
                 'features' => ['Updated Feature'],
             ]);
 
-        $this->assertDatabaseHas('plans', [
+        $this->assertDatabaseHas('planes', [
             'id' => $plan->id,
             'name' => 'Updated Plan',
             'monthly_price_amount' => 3999,
@@ -142,16 +142,16 @@ class PlanControllerTest extends TestCase
 
         $plan = PlanModel::factory()->create();
 
-        $response = $this->deleteJson("/api/v1/plans/{$plan->id}");
+        $response = $this->deleteJson("/api/v1/planes/{$plan->id}");
 
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('plans', ['id' => $plan->id]);
+        $this->assertDatabaseMissing('planes', ['id' => $plan->id]);
     }
 
     public function test_requires_authentication(): void
     {
-        $response = $this->getJson('/api/v1/plans');
+        $response = $this->getJson('/api/v1/planes');
 
         $response->assertStatus(401);
     }
@@ -160,7 +160,7 @@ class PlanControllerTest extends TestCase
     {
         Sanctum::actingAs($this->adminUser);
 
-        $response = $this->postJson('/api/v1/plans', []);
+        $response = $this->postJson('/api/v1/planes', []);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors([

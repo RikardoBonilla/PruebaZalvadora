@@ -104,12 +104,12 @@ The API follows RESTful principles with versioning and is fully documented with 
 - Include `Authorization: Bearer {token}` header for protected endpoints
 - Security scheme documented in Swagger as `bearerAuth`
 
-### Plans API
-- `GET /plans` - List all plans (requires admin)
-- `POST /plans` - Create plan (requires admin)
-- `GET /plans/{id}` - Show plan details
-- `PUT /plans/{id}` - Update plan (requires admin)
-- `DELETE /plans/{id}` - Delete plan (requires admin)
+### Planes API
+- `GET /planes` - List all planes (requires admin)
+- `POST /planes` - Create plane (requires admin)
+- `GET /planes/{id}` - Show plane details
+- `PUT /planes/{id}` - Update plane (requires admin)
+- `DELETE /planes/{id}` - Delete plane (requires admin)
 
 ### Swagger Features Implemented
 - **Complete API specification** with OpenAPI 3.0
@@ -162,7 +162,7 @@ Run tests with: `docker exec zalvadora_app php artisan test`
 
 ## Database Schema
 
-### Plans Table
+### Planes Table
 - `id` (UUID) - Primary key
 - `name` - Plan name
 - `monthly_price_amount` - Price in cents
@@ -174,7 +174,7 @@ Run tests with: `docker exec zalvadora_app php artisan test`
 - `id` (UUID) - Primary key
 - `name` - Company name
 - `email` - Company email (unique)
-- `plan_id` - Foreign key to plans
+- `plan_id` - Foreign key to planes
 
 ### Users Table
 - `id` (UUID) - Primary key

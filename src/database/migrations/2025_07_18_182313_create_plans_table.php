@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('planes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->integer('monthly_price_amount');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plans');
+        Schema::dropIfExists('planes');
     }
 };

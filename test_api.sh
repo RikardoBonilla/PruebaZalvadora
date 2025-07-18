@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "=== Probando API directamente ==="
-echo "1. GET /api/v1/plans (público):"
-curl -s -X GET http://localhost:8080/api/v1/plans -H "Accept: application/json" | head -200
+echo "1. GET /api/v1/planes (público):"
+curl -s -X GET http://localhost:8080/api/v1/planes -H "Accept: application/json" | head -200
 
 echo -e "\n\n2. POST /api/v1/auth/login (obtener token):"
 TOKEN_RESPONSE=$(curl -s -X POST http://localhost:8080/api/v1/auth/login \
@@ -16,8 +16,8 @@ echo "$TOKEN_RESPONSE" | head -20
 TOKEN=$(echo "$TOKEN_RESPONSE" | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
 
 if [ ! -z "$TOKEN" ]; then
-    echo -e "\n\n3. POST /api/v1/plans (crear plan con token):"
-    curl -s -X POST http://localhost:8080/api/v1/plans \
+    echo -e "\n\n3. POST /api/v1/planes (crear plane con token):"
+    curl -s -X POST http://localhost:8080/api/v1/planes \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
       -H "Authorization: Bearer $TOKEN" \
@@ -35,4 +35,4 @@ fi
 echo -e "\n\n=== URLs importantes ==="
 echo "- Swagger UI: http://localhost:8080/api/documentation"
 echo "- API JSON: http://localhost:8080/docs"
-echo "- Test GET: http://localhost:8080/api/v1/plans"
+echo "- Test GET: http://localhost:8080/api/v1/planes"

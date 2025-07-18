@@ -18,7 +18,7 @@ return new class extends Migration
             $table->uuid('plan_id');
             $table->timestamps();
 
-            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('restrict');
+            $table->foreign('plan_id')->references('id')->on('planes')->onDelete('restrict');
             $table->index(['email']);
         });
     }

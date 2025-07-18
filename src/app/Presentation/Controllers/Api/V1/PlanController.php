@@ -20,6 +20,20 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 
+/**
+ * Controlador API para gestión de Planes
+ * 
+ * Maneja las peticiones HTTP relacionadas con planes de suscripción.
+ * Implementa las operaciones CRUD completas siguiendo arquitectura DDD.
+ * 
+ * Responsabilidades:
+ * - Validación de requests a través de Form Requests
+ * - Delegación de lógica de negocio a casos de uso
+ * - Transformación de respuestas mediante Resources
+ * - Documentación automática con OpenAPI/Swagger
+ * 
+ * Todos los endpoints están documentados y probados interactivamente.
+ */
 class PlanController extends Controller
 {
     public function __construct(
@@ -32,11 +46,11 @@ class PlanController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/plans',
-        operationId: 'getPlans',
+        path: '/api/v1/planes',
+        operationId: 'getPlanes',
         description: 'Obtiene la lista de todos los planes disponibles. Este endpoint es público y no requiere autenticación.',
         summary: 'Listar planes',
-        tags: ['Plans'],
+        tags: ['Planes'],
     )]
     #[OA\Response(
         response: 200,
@@ -45,18 +59,18 @@ class PlanController extends Controller
     )]
     public function index(): AnonymousResourceCollection
     {
-        $plans = $this->listPlansUseCase->execute();
+        $planes = $this->listPlansUseCase->execute();
 
-        return PlanResource::collection($plans);
+        return PlanResource::collection($planes);
     }
 
     #[OA\Post(
-        path: '/api/v1/plans',
+        path: '/api/v1/planes',
         operationId: 'createPlan',
         description: 'Crea un nuevo plan de suscripción con las características especificadas',
         summary: 'Crear un plan',
         security: [['bearerAuth' => []]],
-        tags: ['Plans'],
+        tags: ['Planes'],
     )]
     #[OA\RequestBody(
         description: 'Datos del plan a crear',
@@ -109,11 +123,11 @@ class PlanController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/plans/{id}',
+        path: '/api/v1/planes/{id}',
         operationId: 'getPlan',
         description: 'Obtiene los detalles de un plan específico por su ID. Este endpoint es público y no requiere autenticación.',
         summary: 'Obtener un plan',
-        tags: ['Plans'],
+        tags: ['Planes'],
     )]
     #[OA\Parameter(
         name: 'id',
@@ -147,12 +161,12 @@ class PlanController extends Controller
     }
 
     #[OA\Put(
-        path: '/api/v1/plans/{id}',
+        path: '/api/v1/planes/{id}',
         operationId: 'updatePlan',
         description: 'Actualiza un plan existente con nuevos datos',
         summary: 'Actualizar un plan',
         security: [['bearerAuth' => []]],
-        tags: ['Plans'],
+        tags: ['Planes'],
     )]
     #[OA\Parameter(
         name: 'id',
@@ -215,12 +229,12 @@ class PlanController extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/v1/plans/{id}',
+        path: '/api/v1/planes/{id}',
         operationId: 'deletePlan',
         description: 'Elimina un plan existente del sistema',
         summary: 'Eliminar un plan',
         security: [['bearerAuth' => []]],
-        tags: ['Plans'],
+        tags: ['Planes'],
     )]
     #[OA\Parameter(
         name: 'id',

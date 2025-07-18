@@ -11,8 +11,31 @@ use App\Domain\Plan\ValueObjects\UserLimit;
 use App\Domain\Shared\ValueObjects\Money;
 use DateTimeImmutable;
 
+/**
+ * Entidad Plan de Suscripción
+ * 
+ * Representa un plan de suscripción en el dominio de negocio.
+ * Encapsula toda la lógica relacionada con los planes, incluyendo:
+ * - Gestión de precios mensuales
+ * - Límites de usuarios
+ * - Características incluidas
+ * - Validaciones de capacidad
+ * 
+ * Esta entidad es el agregado raíz del contexto Plan.
+ */
 final class Plan
 {
+    /**
+     * Constructor de la entidad Plan
+     * 
+     * @param PlanId $id Identificador único del plan
+     * @param PlanName $name Nombre del plan
+     * @param Money $monthlyPrice Precio mensual del plan
+     * @param UserLimit $userLimit Límite de usuarios permitidos
+     * @param Features $features Características incluidas en el plan
+     * @param DateTimeImmutable $createdAt Fecha de creación
+     * @param DateTimeImmutable|null $updatedAt Fecha de última actualización
+     */
     public function __construct(
         private PlanId $id,
         private PlanName $name,
@@ -24,6 +47,15 @@ final class Plan
     ) {
     }
 
+    /**
+     * Factory method para crear un nuevo plan
+     * 
+     * @param PlanName $name Nombre del plan
+     * @param Money $monthlyPrice Precio mensual
+     * @param UserLimit $userLimit Límite de usuarios
+     * @param Features $features Características del plan
+     * @return self Nueva instancia de Plan
+     */
     public static function create(
         PlanName $name,
         Money $monthlyPrice,
@@ -40,6 +72,14 @@ final class Plan
         );
     }
 
+    /**
+     * Actualiza los datos del plan
+     * 
+     * @param PlanName $name Nuevo nombre del plan
+     * @param Money $monthlyPrice Nuevo precio mensual
+     * @param UserLimit $userLimit Nuevo límite de usuarios
+     * @param Features $features Nuevas características
+     */
     public function update(
         PlanName $name,
         Money $monthlyPrice,
@@ -53,6 +93,12 @@ final class Plan
         $this->updatedAt = new DateTimeImmutable();
     }
 
+    /**
+     * Verifica si el plan puede acomodar la cantidad de usuarios especificada
+     * 
+     * @param int $userCount Cantidad de usuarios a verificar
+     * @return bool true si el plan puede acomodar esa cantidad de usuarios
+     */
     public function canAccommodateUsers(int $userCount): bool
     {
         return !$this->userLimit->isExceeded($userCount);

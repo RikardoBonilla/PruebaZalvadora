@@ -14,8 +14,24 @@ use App\Domain\Shared\ValueObjects\Money;
 use App\Infrastructure\Models\PlanModel;
 use DateTimeImmutable;
 
+/**
+ * Repositorio Eloquent para Planes
+ * 
+ * Implementación concreta del repositorio de planes usando Eloquent ORM.
+ * Actúa como adaptador entre la capa de dominio y la persistencia de datos.
+ * 
+ * Responsabilidades:
+ * - Conversión entre entidades de dominio y modelos Eloquent
+ * - Operaciones CRUD sobre la tabla de planes
+ * - Mapeo de objetos de valor a campos de base de datos
+ */
 final class EloquentPlanRepository implements PlanRepositoryInterface
 {
+    /**
+     * Guarda o actualiza un plan en la base de datos
+     * 
+     * @param Plan $plan Entidad de dominio a persistir
+     */
     public function save(Plan $plan): void
     {
         PlanModel::updateOrCreate(
@@ -30,6 +46,12 @@ final class EloquentPlanRepository implements PlanRepositoryInterface
         );
     }
 
+    /**
+     * Busca un plan por su identificador
+     * 
+     * @param PlanId $id Identificador del plan
+     * @return Plan|null La entidad de dominio o null si no existe
+     */
     public function findById(PlanId $id): ?Plan
     {
         $model = PlanModel::find($id->value());
@@ -37,6 +59,11 @@ final class EloquentPlanRepository implements PlanRepositoryInterface
         return $model ? $this->toDomain($model) : null;
     }
 
+    /**
+     * Obtiene todos los planes de la base de datos
+     * 
+     * @return Plan[] Array de entidades de dominio
+     */
     public function findAll(): array
     {
         return PlanModel::all()
@@ -54,6 +81,12 @@ final class EloquentPlanRepository implements PlanRepositoryInterface
         return PlanModel::where('id', $id->value())->exists();
     }
 
+    /**
+     * Convierte un modelo Eloquent a entidad de dominio
+     * 
+     * @param PlanModel $model Modelo Eloquent desde la base de datos
+     * @return Plan Entidad de dominio correspondiente
+     */
     private function toDomain(PlanModel $model): Plan
     {
         return new Plan(

@@ -1,0 +1,762 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Zalvadora SaaS Platform API",
+        "description": "API RESTful para plataforma SaaS multi-tenant con gestión de planes, empresas y usuarios. Implementada con DDD y arquitectura limpia.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Servidor de desarrollo"
+        }
+    ],
+    "paths": {
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Iniciar sesión y obtener token",
+                "description": "Autentica un usuario y devuelve un token de acceso para usar en endpoints protegidos",
+                "operationId": "login",
+                "requestBody": {
+                    "description": "Credenciales de acceso",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Email del usuario",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "admin@example.com"
+                                    },
+                                    "password": {
+                                        "description": "Contraseña del usuario",
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    },
+                                    "device_name": {
+                                        "description": "Nombre del dispositivo (opcional)",
+                                        "type": "string",
+                                        "example": "Mi dispositivo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "Token de acceso Bearer",
+                                            "type": "string",
+                                            "example": "1|abcdef123456..."
+                                        },
+                                        "token_type": {
+                                            "description": "Tipo de token",
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        },
+                                        "user": {
+                                            "description": "Datos del usuario autenticado",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "format": "uuid"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Admin User"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "admin@example.com"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "admin",
+                                                        "user"
+                                                    ],
+                                                    "example": "admin"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Credenciales incorrectas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The provided credentials are incorrect."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Cerrar sesión",
+                "description": "Revoca el token actual del usuario autenticado",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Logout exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/plans": {
+            "get": {
+                "tags": [
+                    "Plans"
+                ],
+                "summary": "Listar planes",
+                "description": "Obtiene la lista de todos los planes disponibles. Este endpoint es público y no requiere autenticación.",
+                "operationId": "getPlans",
+                "responses": {
+                    "200": {
+                        "description": "Lista de planes obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlanCollection"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Plans"
+                ],
+                "summary": "Crear un plan",
+                "description": "Crea un nuevo plan de suscripción con las características especificadas",
+                "operationId": "createPlan",
+                "requestBody": {
+                    "description": "Datos del plan a crear",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreatePlanRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Plan creado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Plan"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No autorizado - Solo administradores",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ForbiddenResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/plans/{id}": {
+            "get": {
+                "tags": [
+                    "Plans"
+                ],
+                "summary": "Obtener un plan",
+                "description": "Obtiene los detalles de un plan específico por su ID. Este endpoint es público y no requiere autenticación.",
+                "operationId": "getPlan",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID único del plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Plan encontrado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Plan"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Plan no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Plans"
+                ],
+                "summary": "Actualizar un plan",
+                "description": "Actualiza un plan existente con nuevos datos",
+                "operationId": "updatePlan",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID único del plan a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Nuevos datos del plan",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePlanRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Plan actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Plan"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No autorizado - Solo administradores",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ForbiddenResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Plan no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Plans"
+                ],
+                "summary": "Eliminar un plan",
+                "description": "Elimina un plan existente del sistema",
+                "operationId": "deletePlan",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID único del plan a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Plan eliminado exitosamente"
+                    },
+                    "401": {
+                        "description": "No autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No autorizado - Solo administradores",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ForbiddenResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Plan no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Plan": {
+                "title": "Plan",
+                "description": "Plan de suscripción con límites y características",
+                "required": [
+                    "id",
+                    "name",
+                    "monthly_price",
+                    "user_limit",
+                    "features",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID único del plan",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "description": "Nombre del plan",
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Plan Básico"
+                    },
+                    "monthly_price": {
+                        "description": "Precio mensual del plan",
+                        "required": [
+                            "amount",
+                            "currency"
+                        ],
+                        "properties": {
+                            "amount": {
+                                "description": "Precio en centavos",
+                                "type": "integer",
+                                "example": 2999
+                            },
+                            "currency": {
+                                "description": "Código de moneda",
+                                "type": "string",
+                                "maxLength": 3,
+                                "example": "USD"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "user_limit": {
+                        "description": "Límite máximo de usuarios",
+                        "type": "integer",
+                        "minimum": 1,
+                        "example": 10
+                    },
+                    "features": {
+                        "description": "Lista de características del plan",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "Dashboard básico",
+                            "Soporte por email",
+                            "API access"
+                        ]
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15 10:30:00"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de última actualización",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-16 15:45:00",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CreatePlanRequest": {
+                "title": "Crear Plan",
+                "description": "Datos requeridos para crear un nuevo plan",
+                "required": [
+                    "name",
+                    "monthly_price",
+                    "currency",
+                    "user_limit",
+                    "features"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nombre del plan",
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Plan Premium"
+                    },
+                    "monthly_price": {
+                        "description": "Precio mensual en centavos",
+                        "type": "integer",
+                        "minimum": 0,
+                        "example": 4999
+                    },
+                    "currency": {
+                        "description": "Código de moneda (3 caracteres)",
+                        "type": "string",
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "example": "USD"
+                    },
+                    "user_limit": {
+                        "description": "Límite máximo de usuarios",
+                        "type": "integer",
+                        "minimum": 1,
+                        "example": 25
+                    },
+                    "features": {
+                        "description": "Lista de características del plan",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 255
+                        },
+                        "example": [
+                            "Dashboard avanzado",
+                            "Soporte prioritario",
+                            "API ilimitado",
+                            "Reportes personalizados"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePlanRequest": {
+                "title": "Actualizar Plan",
+                "description": "Datos para actualizar un plan existente",
+                "required": [
+                    "name",
+                    "monthly_price",
+                    "currency",
+                    "user_limit",
+                    "features"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nombre del plan",
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Plan Premium"
+                    },
+                    "monthly_price": {
+                        "description": "Precio mensual en centavos",
+                        "type": "integer",
+                        "minimum": 0,
+                        "example": 4999
+                    },
+                    "currency": {
+                        "description": "Código de moneda (3 caracteres)",
+                        "type": "string",
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "example": "USD"
+                    },
+                    "user_limit": {
+                        "description": "Límite máximo de usuarios",
+                        "type": "integer",
+                        "minimum": 1,
+                        "example": 25
+                    },
+                    "features": {
+                        "description": "Lista de características del plan",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 255
+                        },
+                        "example": [
+                            "Dashboard avanzado",
+                            "Soporte prioritario",
+                            "API ilimitado",
+                            "Reportes personalizados"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "PlanCollection": {
+                "title": "Colección de Planes",
+                "description": "Lista de planes",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "description": "Array de planes",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Plan"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ErrorResponse": {
+                "title": "Error Response",
+                "description": "Respuesta de error estándar",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "description": "Mensaje de error",
+                        "type": "string",
+                        "example": "Plan not found"
+                    },
+                    "error": {
+                        "description": "Detalles adicionales del error",
+                        "type": "string",
+                        "example": "The requested plan does not exist"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationErrorResponse": {
+                "title": "Validation Error Response",
+                "description": "Respuesta de error de validación",
+                "required": [
+                    "message",
+                    "errors"
+                ],
+                "properties": {
+                    "message": {
+                        "description": "Mensaje de error general",
+                        "type": "string",
+                        "example": "The given data was invalid."
+                    },
+                    "errors": {
+                        "description": "Errores de validación por campo",
+                        "type": "object",
+                        "example": {
+                            "name": [
+                                "The name field is required."
+                            ],
+                            "monthly_price": [
+                                "The monthly price must be an integer."
+                            ],
+                            "features": [
+                                "The features field is required."
+                            ]
+                        },
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UnauthorizedResponse": {
+                "title": "Unauthorized Response",
+                "description": "Respuesta de error de autenticación",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "description": "Mensaje de error de autenticación",
+                        "type": "string",
+                        "example": "Unauthenticated."
+                    }
+                },
+                "type": "object"
+            },
+            "ForbiddenResponse": {
+                "title": "Forbidden Response",
+                "description": "Respuesta de error de autorización",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "description": "Mensaje de error de autorización",
+                        "type": "string",
+                        "example": "This action is unauthorized."
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Plans",
+            "description": "Gestión de planes de suscripción"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        }
+    ]
+}

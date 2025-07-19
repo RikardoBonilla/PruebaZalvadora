@@ -27,6 +27,14 @@ use OpenApi\Attributes as OA;
     name: 'Planes',
     description: 'Gestión de planes de suscripción'
 )]
+#[OA\Tag(
+    name: 'Empresas',
+    description: 'Gestión de empresas tenant'
+)]
+#[OA\Tag(
+    name: 'Usuarios de Empresa',
+    description: 'Gestión de usuarios dentro de empresas'
+)]
 #[OA\Schema(
     schema: 'Plan',
     title: 'Plan',
@@ -111,6 +119,104 @@ use OpenApi\Attributes as OA;
             type: 'array',
             items: new OA\Items(ref: '#/components/schemas/Plan')
         )
+    ]
+)]
+#[OA\Schema(
+    schema: 'Empresa',
+    title: 'Empresa',
+    description: 'Empresa tenant con plan asignado',
+    type: 'object',
+    required: ['id', 'nombre', 'email', 'plan_id', 'fecha_suscripcion', 'created_at'],
+    properties: [
+        new OA\Property(property: 'id', description: 'ID único de la empresa', type: 'string', format: 'uuid', example: '550e8400-e29b-41d4-a716-446655440000'),
+        new OA\Property(property: 'nombre', description: 'Nombre de la empresa', type: 'string', maxLength: 255, example: 'Empresa Demo S.L.'),
+        new OA\Property(property: 'email', description: 'Email de contacto de la empresa', type: 'string', format: 'email', example: 'contacto@empresademo.com'),
+        new OA\Property(property: 'plan_id', description: 'ID del plan asignado', type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000'),
+        new OA\Property(property: 'fecha_suscripcion', description: 'Fecha de suscripción al plan', type: 'string', format: 'date-time', example: '2024-01-15 10:30:00'),
+        new OA\Property(property: 'created_at', description: 'Fecha de creación', type: 'string', format: 'date-time', example: '2024-01-15 10:30:00'),
+        new OA\Property(property: 'updated_at', description: 'Fecha de última actualización', type: 'string', format: 'date-time', example: '2024-01-16 15:45:00')
+    ]
+)]
+#[OA\Schema(
+    schema: 'CreateEmpresaRequest',
+    title: 'Crear Empresa',
+    description: 'Datos requeridos para crear una nueva empresa',
+    type: 'object',
+    required: ['nombre', 'email', 'plan_id'],
+    properties: [
+        new OA\Property(property: 'nombre', description: 'Nombre de la empresa', type: 'string', maxLength: 255, example: 'Empresa Demo S.L.'),
+        new OA\Property(property: 'email', description: 'Email de contacto de la empresa', type: 'string', format: 'email', example: 'contacto@empresademo.com'),
+        new OA\Property(property: 'plan_id', description: 'ID del plan a asignar', type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000')
+    ]
+)]
+#[OA\Schema(
+    schema: 'UpdateEmpresaRequest',
+    title: 'Actualizar Empresa',
+    description: 'Datos para actualizar una empresa existente',
+    type: 'object',
+    required: ['nombre', 'email'],
+    properties: [
+        new OA\Property(property: 'nombre', description: 'Nombre de la empresa', type: 'string', maxLength: 255, example: 'Empresa Demo S.L.'),
+        new OA\Property(property: 'email', description: 'Email de contacto de la empresa', type: 'string', format: 'email', example: 'contacto@empresademo.com'),
+        new OA\Property(property: 'plan_id', description: 'Nuevo plan a asignar (opcional)', type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000'),
+        new OA\Property(property: 'motivo_cambio', description: 'Motivo del cambio de plan (opcional)', type: 'string', example: 'Upgrade por crecimiento del equipo')
+    ]
+)]
+#[OA\Schema(
+    schema: 'UsuarioEmpresa',
+    title: 'Usuario de Empresa',
+    description: 'Usuario perteneciente a una empresa',
+    type: 'object',
+    required: ['id', 'nombre', 'email', 'empresa_id', 'rol', 'created_at'],
+    properties: [
+        new OA\Property(property: 'id', description: 'ID único del usuario', type: 'string', format: 'uuid', example: '550e8400-e29b-41d4-a716-446655440000'),
+        new OA\Property(property: 'nombre', description: 'Nombre del usuario', type: 'string', maxLength: 255, example: 'Juan Pérez'),
+        new OA\Property(property: 'email', description: 'Email del usuario', type: 'string', format: 'email', example: 'juan.perez@empresademo.com'),
+        new OA\Property(property: 'empresa_id', description: 'ID de la empresa a la que pertenece', type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000'),
+        new OA\Property(property: 'rol', description: 'Rol del usuario en la empresa', type: 'string', enum: ['admin', 'usuario'], example: 'usuario'),
+        new OA\Property(property: 'created_at', description: 'Fecha de creación', type: 'string', format: 'date-time', example: '2024-01-15 10:30:00'),
+        new OA\Property(property: 'updated_at', description: 'Fecha de última actualización', type: 'string', format: 'date-time', example: '2024-01-16 15:45:00')
+    ]
+)]
+#[OA\Schema(
+    schema: 'CreateUsuarioEmpresaRequest',
+    title: 'Crear Usuario de Empresa',
+    description: 'Datos requeridos para crear un nuevo usuario de empresa',
+    type: 'object',
+    required: ['nombre', 'email', 'rol', 'password'],
+    properties: [
+        new OA\Property(property: 'nombre', description: 'Nombre del usuario', type: 'string', maxLength: 255, example: 'Juan Pérez'),
+        new OA\Property(property: 'email', description: 'Email del usuario', type: 'string', format: 'email', example: 'juan.perez@empresademo.com'),
+        new OA\Property(property: 'rol', description: 'Rol del usuario', type: 'string', enum: ['admin', 'usuario'], example: 'usuario'),
+        new OA\Property(property: 'password', description: 'Contraseña del usuario', type: 'string', format: 'password', example: 'password123')
+    ]
+)]
+#[OA\Schema(
+    schema: 'UpdateUsuarioEmpresaRequest',
+    title: 'Actualizar Usuario de Empresa',
+    description: 'Datos para actualizar un usuario de empresa existente',
+    type: 'object',
+    required: ['nombre', 'email', 'rol'],
+    properties: [
+        new OA\Property(property: 'nombre', description: 'Nombre del usuario', type: 'string', maxLength: 255, example: 'Juan Pérez'),
+        new OA\Property(property: 'email', description: 'Email del usuario', type: 'string', format: 'email', example: 'juan.perez@empresademo.com'),
+        new OA\Property(property: 'rol', description: 'Rol del usuario', type: 'string', enum: ['admin', 'usuario'], example: 'usuario'),
+        new OA\Property(property: 'password', description: 'Nueva contraseña (opcional)', type: 'string', format: 'password', example: 'newpassword123')
+    ]
+)]
+#[OA\Schema(
+    schema: 'Pagination',
+    title: 'Paginación',
+    description: 'Información de paginación para listas',
+    type: 'object',
+    required: ['current_page', 'per_page', 'total', 'last_page'],
+    properties: [
+        new OA\Property(property: 'current_page', description: 'Página actual', type: 'integer', example: 1),
+        new OA\Property(property: 'per_page', description: 'Elementos por página', type: 'integer', example: 10),
+        new OA\Property(property: 'total', description: 'Total de elementos', type: 'integer', example: 50),
+        new OA\Property(property: 'last_page', description: 'Última página', type: 'integer', example: 5),
+        new OA\Property(property: 'from', description: 'Primer elemento de la página', type: 'integer', example: 1),
+        new OA\Property(property: 'to', description: 'Último elemento de la página', type: 'integer', example: 10)
     ]
 )]
 #[OA\Schema(

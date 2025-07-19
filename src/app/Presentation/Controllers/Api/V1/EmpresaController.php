@@ -41,7 +41,6 @@ class EmpresaController extends Controller
      *     summary="Listar empresas",
      *     description="Obtiene una lista paginada de todas las empresas registradas",
      *     tags={"Empresas"},
-     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
@@ -150,7 +149,6 @@ class EmpresaController extends Controller
      *     summary="Obtener empresa",
      *     description="Obtiene los detalles de una empresa específica",
      *     tags={"Empresas"},
-     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

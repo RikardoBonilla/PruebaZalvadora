@@ -8,7 +8,7 @@ use App\Domain\Shared\ValueObjects\Id;
  * Value Object para el ID de una empresa.
  * Extiende la clase base Id para mantener consistencia en el dominio.
  */
-class EmpresaId extends Id
+readonly class EmpresaId extends Id
 {
     /**
      * Genera un nuevo ID único para una empresa.

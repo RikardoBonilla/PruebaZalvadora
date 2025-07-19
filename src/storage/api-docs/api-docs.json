@@ -166,6 +166,368 @@
                 ]
             }
         },
+        "/api/v1/empresas": {
+            "get": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Listar empresas",
+                "description": "Obtiene una lista paginada de todas las empresas registradas",
+                "operationId": "0bb64120c911cc65e9a29447484378c1",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Número de elementos por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de empresas obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Empresa"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "#/components/schemas/Pagination"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Crear empresa",
+                "description": "Crea una nueva empresa con un plan asignado",
+                "operationId": "c873fee68c1ddd3e4c2d8a4ce991e1de",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "email",
+                                    "plan_id"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Empresa Demo S.L."
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "contacto@empresademo.com"
+                                    },
+                                    "plan_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Empresa creada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empresa creada exitosamente"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Empresa"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/empresas/{id}": {
+            "get": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Obtener empresa",
+                "description": "Obtiene los detalles de una empresa específica",
+                "operationId": "e7787067a1d9194ad0e4806b42d6028b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la empresa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Empresa"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Actualizar empresa",
+                "description": "Actualiza los datos de una empresa existente, incluyendo cambio de plan opcional",
+                "operationId": "77e0611a6efddcaae4252dc2ec84ee22",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Empresa Demo S.L."
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "contacto@empresademo.com"
+                                    },
+                                    "plan_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                                    },
+                                    "motivo_cambio": {
+                                        "type": "string",
+                                        "example": "Upgrade por crecimiento del equipo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Empresa actualizada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empresa actualizada exitosamente"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Empresa"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Eliminar empresa",
+                "description": "Elimina una empresa del sistema (solo si no tiene usuarios activos)",
+                "operationId": "b0ce43dc13f73c2ca5f8b6ee4995e222",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Empresa eliminada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empresa eliminada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/planes": {
             "get": {
                 "tags": [
@@ -445,6 +807,366 @@
                     }
                 ]
             }
+        },
+        "/api/v1/empresas/{empresa_id}/usuarios": {
+            "get": {
+                "tags": [
+                    "Usuarios de Empresa"
+                ],
+                "summary": "Listar usuarios de empresa",
+                "description": "Obtiene una lista paginada de todos los usuarios de una empresa específica",
+                "operationId": "9dc02d44c036134bda156416ee53266d",
+                "parameters": [
+                    {
+                        "name": "empresa_id",
+                        "in": "path",
+                        "description": "ID de la empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Número de elementos por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuarios obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UsuarioEmpresa"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "#/components/schemas/Pagination"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Usuarios de Empresa"
+                ],
+                "summary": "Crear usuario de empresa",
+                "description": "Crea un nuevo usuario dentro de una empresa específica",
+                "operationId": "ad51f86a6aa5fa31af07a0b37dc19628",
+                "parameters": [
+                    {
+                        "name": "empresa_id",
+                        "in": "path",
+                        "description": "ID de la empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUsuarioEmpresaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario creado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario creado exitosamente"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UsuarioEmpresa"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/empresas/{empresa_id}/usuarios/{id}": {
+            "get": {
+                "tags": [
+                    "Usuarios de Empresa"
+                ],
+                "summary": "Obtener usuario de empresa",
+                "description": "Obtiene los detalles de un usuario específico de una empresa",
+                "operationId": "89ed8aadd3fa4fd6421875154c4d9383",
+                "parameters": [
+                    {
+                        "name": "empresa_id",
+                        "in": "path",
+                        "description": "ID de la empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UsuarioEmpresa"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Usuarios de Empresa"
+                ],
+                "summary": "Actualizar usuario de empresa",
+                "description": "Actualiza los datos de un usuario existente de una empresa",
+                "operationId": "8c32cfedb9863d3fea49d4370c9f6a42",
+                "parameters": [
+                    {
+                        "name": "empresa_id",
+                        "in": "path",
+                        "description": "ID de la empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUsuarioEmpresaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuario actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario actualizado exitosamente"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UsuarioEmpresa"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Usuarios de Empresa"
+                ],
+                "summary": "Eliminar usuario de empresa",
+                "description": "Elimina un usuario de una empresa del sistema",
+                "operationId": "3a8107b1e8239d7d457834ff54bd5f7c",
+                "parameters": [
+                    {
+                        "name": "empresa_id",
+                        "in": "path",
+                        "description": "ID de la empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario eliminado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario eliminado exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -651,6 +1373,309 @@
                 },
                 "type": "object"
             },
+            "Empresa": {
+                "title": "Empresa",
+                "description": "Empresa tenant con plan asignado",
+                "required": [
+                    "id",
+                    "nombre",
+                    "email",
+                    "plan_id",
+                    "fecha_suscripcion",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID único de la empresa",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "nombre": {
+                        "description": "Nombre de la empresa",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Empresa Demo S.L."
+                    },
+                    "email": {
+                        "description": "Email de contacto de la empresa",
+                        "type": "string",
+                        "format": "email",
+                        "example": "contacto@empresademo.com"
+                    },
+                    "plan_id": {
+                        "description": "ID del plan asignado",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "fecha_suscripcion": {
+                        "description": "Fecha de suscripción al plan",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15 10:30:00"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15 10:30:00"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de última actualización",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-16 15:45:00"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateEmpresaRequest": {
+                "title": "Crear Empresa",
+                "description": "Datos requeridos para crear una nueva empresa",
+                "required": [
+                    "nombre",
+                    "email",
+                    "plan_id"
+                ],
+                "properties": {
+                    "nombre": {
+                        "description": "Nombre de la empresa",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Empresa Demo S.L."
+                    },
+                    "email": {
+                        "description": "Email de contacto de la empresa",
+                        "type": "string",
+                        "format": "email",
+                        "example": "contacto@empresademo.com"
+                    },
+                    "plan_id": {
+                        "description": "ID del plan a asignar",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateEmpresaRequest": {
+                "title": "Actualizar Empresa",
+                "description": "Datos para actualizar una empresa existente",
+                "required": [
+                    "nombre",
+                    "email"
+                ],
+                "properties": {
+                    "nombre": {
+                        "description": "Nombre de la empresa",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Empresa Demo S.L."
+                    },
+                    "email": {
+                        "description": "Email de contacto de la empresa",
+                        "type": "string",
+                        "format": "email",
+                        "example": "contacto@empresademo.com"
+                    },
+                    "plan_id": {
+                        "description": "Nuevo plan a asignar (opcional)",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "motivo_cambio": {
+                        "description": "Motivo del cambio de plan (opcional)",
+                        "type": "string",
+                        "example": "Upgrade por crecimiento del equipo"
+                    }
+                },
+                "type": "object"
+            },
+            "UsuarioEmpresa": {
+                "title": "Usuario de Empresa",
+                "description": "Usuario perteneciente a una empresa",
+                "required": [
+                    "id",
+                    "nombre",
+                    "email",
+                    "empresa_id",
+                    "rol",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID único del usuario",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "nombre": {
+                        "description": "Nombre del usuario",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Juan Pérez"
+                    },
+                    "email": {
+                        "description": "Email del usuario",
+                        "type": "string",
+                        "format": "email",
+                        "example": "juan.perez@empresademo.com"
+                    },
+                    "empresa_id": {
+                        "description": "ID de la empresa a la que pertenece",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "rol": {
+                        "description": "Rol del usuario en la empresa",
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "usuario"
+                        ],
+                        "example": "usuario"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15 10:30:00"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de última actualización",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-16 15:45:00"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateUsuarioEmpresaRequest": {
+                "title": "Crear Usuario de Empresa",
+                "description": "Datos requeridos para crear un nuevo usuario de empresa",
+                "required": [
+                    "nombre",
+                    "email",
+                    "rol",
+                    "password"
+                ],
+                "properties": {
+                    "nombre": {
+                        "description": "Nombre del usuario",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Juan Pérez"
+                    },
+                    "email": {
+                        "description": "Email del usuario",
+                        "type": "string",
+                        "format": "email",
+                        "example": "juan.perez@empresademo.com"
+                    },
+                    "rol": {
+                        "description": "Rol del usuario",
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "usuario"
+                        ],
+                        "example": "usuario"
+                    },
+                    "password": {
+                        "description": "Contraseña del usuario",
+                        "type": "string",
+                        "format": "password",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateUsuarioEmpresaRequest": {
+                "title": "Actualizar Usuario de Empresa",
+                "description": "Datos para actualizar un usuario de empresa existente",
+                "required": [
+                    "nombre",
+                    "email",
+                    "rol"
+                ],
+                "properties": {
+                    "nombre": {
+                        "description": "Nombre del usuario",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Juan Pérez"
+                    },
+                    "email": {
+                        "description": "Email del usuario",
+                        "type": "string",
+                        "format": "email",
+                        "example": "juan.perez@empresademo.com"
+                    },
+                    "rol": {
+                        "description": "Rol del usuario",
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "usuario"
+                        ],
+                        "example": "usuario"
+                    },
+                    "password": {
+                        "description": "Nueva contraseña (opcional)",
+                        "type": "string",
+                        "format": "password",
+                        "example": "newpassword123"
+                    }
+                },
+                "type": "object"
+            },
+            "Pagination": {
+                "title": "Paginación",
+                "description": "Información de paginación para listas",
+                "required": [
+                    "current_page",
+                    "per_page",
+                    "total",
+                    "last_page"
+                ],
+                "properties": {
+                    "current_page": {
+                        "description": "Página actual",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "per_page": {
+                        "description": "Elementos por página",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "total": {
+                        "description": "Total de elementos",
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "last_page": {
+                        "description": "Última página",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "from": {
+                        "description": "Primer elemento de la página",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "to": {
+                        "description": "Último elemento de la página",
+                        "type": "integer",
+                        "example": 10
+                    }
+                },
+                "type": "object"
+            },
             "ErrorResponse": {
                 "title": "Error Response",
                 "description": "Respuesta de error estándar",
@@ -739,6 +1764,58 @@
                 "type": "object"
             }
         },
+        "responses": {
+            "BadRequest": {
+                "description": "Bad Request - Solicitud inválida",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "Unauthorized": {
+                "description": "Unauthorized - No autenticado",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/UnauthorizedResponse"
+                        }
+                    }
+                }
+            },
+            "Forbidden": {
+                "description": "Forbidden - No autorizado",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ForbiddenResponse"
+                        }
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "Not Found - Recurso no encontrado",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "ValidationError": {
+                "description": "Validation Error - Error de validación",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ValidationErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
@@ -753,6 +1830,14 @@
         {
             "name": "Planes",
             "description": "Gestión de planes de suscripción"
+        },
+        {
+            "name": "Empresas",
+            "description": "Gestión de empresas tenant"
+        },
+        {
+            "name": "Usuarios de Empresa",
+            "description": "Gestión de usuarios dentro de empresas"
         },
         {
             "name": "Authentication",

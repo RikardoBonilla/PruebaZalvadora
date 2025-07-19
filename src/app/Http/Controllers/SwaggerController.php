@@ -274,6 +274,31 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'message', description: 'Mensaje de error de autorización', type: 'string', example: 'This action is unauthorized.')
     ]
 )]
+#[OA\Response(
+    response: 'BadRequest',
+    description: 'Bad Request - Solicitud inválida',
+    content: new OA\JsonContent(ref: '#/components/schemas/ErrorResponse')
+)]
+#[OA\Response(
+    response: 'Unauthorized',
+    description: 'Unauthorized - No autenticado',
+    content: new OA\JsonContent(ref: '#/components/schemas/UnauthorizedResponse')
+)]
+#[OA\Response(
+    response: 'Forbidden',
+    description: 'Forbidden - No autorizado',
+    content: new OA\JsonContent(ref: '#/components/schemas/ForbiddenResponse')
+)]
+#[OA\Response(
+    response: 'NotFound',
+    description: 'Not Found - Recurso no encontrado',
+    content: new OA\JsonContent(ref: '#/components/schemas/ErrorResponse')
+)]
+#[OA\Response(
+    response: 'ValidationError',
+    description: 'Validation Error - Error de validación',
+    content: new OA\JsonContent(ref: '#/components/schemas/ValidationErrorResponse')
+)]
 class SwaggerController extends Controller
 {
     // Esta clase solo contiene las anotaciones de Swagger

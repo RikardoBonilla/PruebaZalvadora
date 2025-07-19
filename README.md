@@ -57,7 +57,7 @@ El proyecto esta estructurado siguiendo los principios de DDD con las siguientes
 
 1. **Clonar el repositorio**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/RikardoBonilla/PruebaZalvadora.git
    cd PruebaZalvadora
    ```
 
